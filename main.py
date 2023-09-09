@@ -2,7 +2,7 @@ import random
 from itertools import product
 from pprint import pprint
 import sys
-from typing import List
+from typing import List, Tuple
 
 def pick_another_person(n: int, you: int) -> int:
     # pick a number within N that is not you
@@ -11,12 +11,13 @@ def pick_another_person(n: int, you: int) -> int:
         x = random.randint(1, n)
     return x
 
-def generate_outcomes(n: int) -> List[List[List[int]]]:
+def generate_outcomes(n: int) -> List[List[Tuple[int]]]:
     def helper(outcomes_so_far, you):
         if you == n:
             return outcomes_so_far
         
-        your_choices = [[you, x] for x in range(n) if x != you]
+        # pre-sort tuples to make comparison later easier
+        your_choices = [(you, x) if you < x else (x, you) for x in range(n) if x != you]
         new_outcomes = [
             outcome_so_far + [choice]
             for outcome_so_far in outcomes_so_far
@@ -25,16 +26,12 @@ def generate_outcomes(n: int) -> List[List[List[int]]]:
         return helper(new_outcomes, you + 1)
 
 
-    return helper([[[0, x]] for x in range(n) if x != 0], 1)
+    return helper([[(0, x)] for x in range(n) if x != 0], 1)
 
-def does_everyone_drink(outcome: List[List]) -> bool:
-    # sort each tuple in place
+def does_everyone_drink(outcome: List[Tuple[int]]) -> bool:
     # make a set
     # someone made eye contact if the size of the set is smaller than the original list
-    for pair in outcome:
-        pair.sort()
-    sorted_hashable_outcomes = [tuple(pair) for pair in outcome]
-    return len(set(sorted_hashable_outcomes)) == len(outcome)
+    return len(set(outcome)) == len(outcome)
 
 def format_probability(p: float):
     return f"{round(p*100, 2)}%"
@@ -44,7 +41,6 @@ def summarize(max: int):
         outcomes = generate_outcomes(n)
         times_everyone_drinks = 0
         for outcome in outcomes:
-            outcome.sort()
             everyone_drinks = does_everyone_drink(outcome)
             if everyone_drinks:
                 times_everyone_drinks += 1
