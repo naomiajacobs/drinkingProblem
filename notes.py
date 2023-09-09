@@ -13,9 +13,7 @@ def pick_another_person(n: int, you: int) -> int:
 
 def generate_outcomes(n: int) -> List[List[List[int]]]:
     def helper(outcomes_so_far, you):
-        # base case -> len of outcome in outcomes is n
         if you == n:
-            print('done')
             return outcomes_so_far
         
         your_choices = [[you, x] for x in range(n) if x != you]
@@ -36,9 +34,10 @@ def does_everyone_drink(outcome: List[List]) -> bool:
     for pair in outcome:
         pair.sort()
     sorted_hashable_outcomes = [tuple(pair) for pair in outcome]
-    pprint(sorted_hashable_outcomes)
-    pprint(set(sorted_hashable_outcomes))
     return len(set(sorted_hashable_outcomes)) == len(outcome)
+
+def format_probability(p: float):
+    return f"{round(p*100, 2)}%"
 
 def summarize(n: int):
     outcomes = generate_outcomes(n)
@@ -48,10 +47,14 @@ def summarize(n: int):
         everyone_drinks = does_everyone_drink(outcome)
         if everyone_drinks:
             times_everyone_drinks += 1
-        pprint(f"{'Everyone drinks' if everyone_drinks else 'Found pairs'}")
-    pprint(f"Number of outcomes: {len(outcomes)}")
-    pprint(f"Number of times everyone drinks: {times_everyone_drinks}")
-    
+    p_everyone_drinks = times_everyone_drinks/len(outcomes)
+    p_you_make_eye_contact = 1/(n-1)
+    p_you_drink = p_everyone_drinks + p_you_make_eye_contact
+    pprint(f"Outcomes: {len(outcomes)}")
+    pprint(f"Times everyone drinks: {times_everyone_drinks}")
+    pprint(f"P(everyone drinks): {format_probability(p_everyone_drinks)}")
+    pprint(f"P(you make eye contact): {format_probability(p_you_make_eye_contact)}")
+    pprint(f"P(you drink): {format_probability(p_you_drink)}")
 
 
 if __name__ == "__main__":
