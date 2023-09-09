@@ -16,7 +16,7 @@ Theoretically deriving the answer to question 2 is hard. Instead, this script si
 The empirically derived answers for small Ns is:
 
 | N | N(outcomes) | N(everyone drinks) | P(everyone drinks) | P(you make eye contact) | P(you drink) |
-|---|---|---|---|---|
+|---|-------------|--------------------|--------------------|-------------------------|--------------|
 | 3 | 8 | 2 | 25.0% | 50.0% | 75.0% |
 | 4 | 81 | 30 | 37.04% | 33.33% | 70.37% |
 | 5 | 1024 | 444 | 43.36% | 25.0% | 68.36% |
