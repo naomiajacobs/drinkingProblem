@@ -55,5 +55,6 @@ def summarize(n: int):
 
 
 if __name__ == "__main__":
+    # Example usage to see all outcomes for N = 4: `python notes.py 4`
     n = int(sys.argv[1])
     summarize(n)
