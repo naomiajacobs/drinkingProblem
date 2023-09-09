@@ -28,7 +28,7 @@ def generate_outcomes(n: int) -> List[List[Tuple[int]]]:
 
     return helper([[(0, x)] for x in range(n) if x != 0], 1)
 
-def does_everyone_drink(outcome: List[Tuple[int]]) -> bool:
+def no_pairs(outcome: List[Tuple[int]]) -> bool:
     # make a set
     # someone made eye contact if the size of the set is smaller than the original list
     return len(set(outcome)) == len(outcome)
@@ -39,15 +39,14 @@ def format_probability(p: float):
 def summarize(max: int):
     for n in range(3, max + 1):
         outcomes = generate_outcomes(n)
-        times_everyone_drinks = 0
+        times_no_pairs = 0
         for outcome in outcomes:
-            everyone_drinks = does_everyone_drink(outcome)
-            if everyone_drinks:
-                times_everyone_drinks += 1
-        p_everyone_drinks = times_everyone_drinks/len(outcomes)
+            if no_pairs(outcome):
+                times_no_pairs += 1
+        p_no_pairs = times_no_pairs/len(outcomes)
         p_you_make_eye_contact = 1/(n-1)
-        p_you_drink = p_everyone_drinks + p_you_make_eye_contact
-        print(f"| {n} | {len(outcomes)} | {times_everyone_drinks} | {format_probability(p_everyone_drinks)} | {format_probability(p_you_make_eye_contact)} | {format_probability(p_you_drink)} |")
+        p_you_drink = p_no_pairs + p_you_make_eye_contact
+        print(f"| {n} | {len(outcomes)} | {times_no_pairs} | {format_probability(p_no_pairs)} | {format_probability(p_you_make_eye_contact)} | {format_probability(p_you_drink)} |")
 
 
 if __name__ == "__main__":
