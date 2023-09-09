@@ -39,25 +39,22 @@ def does_everyone_drink(outcome: List[List]) -> bool:
 def format_probability(p: float):
     return f"{round(p*100, 2)}%"
 
-def summarize(n: int):
-    outcomes = generate_outcomes(n)
-    times_everyone_drinks = 0
-    for outcome in outcomes:
-        outcome.sort()
-        everyone_drinks = does_everyone_drink(outcome)
-        if everyone_drinks:
-            times_everyone_drinks += 1
-    p_everyone_drinks = times_everyone_drinks/len(outcomes)
-    p_you_make_eye_contact = 1/(n-1)
-    p_you_drink = p_everyone_drinks + p_you_make_eye_contact
-    pprint(f"Outcomes: {len(outcomes)}")
-    pprint(f"Times everyone drinks: {times_everyone_drinks}")
-    pprint(f"P(everyone drinks): {format_probability(p_everyone_drinks)}")
-    pprint(f"P(you make eye contact): {format_probability(p_you_make_eye_contact)}")
-    pprint(f"P(you drink): {format_probability(p_you_drink)}")
+def summarize(max: int):
+    for n in range(3, max + 1):
+        outcomes = generate_outcomes(n)
+        times_everyone_drinks = 0
+        for outcome in outcomes:
+            outcome.sort()
+            everyone_drinks = does_everyone_drink(outcome)
+            if everyone_drinks:
+                times_everyone_drinks += 1
+        p_everyone_drinks = times_everyone_drinks/len(outcomes)
+        p_you_make_eye_contact = 1/(n-1)
+        p_you_drink = p_everyone_drinks + p_you_make_eye_contact
+        print(f"| {n} | {len(outcomes)} | {times_everyone_drinks} | {format_probability(p_everyone_drinks)} | {format_probability(p_you_make_eye_contact)} | {format_probability(p_you_drink)} |")
 
 
 if __name__ == "__main__":
-    # Example usage to see all outcomes for N = 4: `python notes.py 4`
+    # Example usage to see all outcomes up to N = 4: `python notes.py 4`
     n = int(sys.argv[1])
     summarize(n)
